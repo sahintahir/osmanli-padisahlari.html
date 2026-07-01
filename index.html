@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>36 Padişah - Osmanlı Sultanları</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #1a1410;
+            background-image: radial-gradient(circle at 10% 20%, #2d221c, #0f0b09);
+            min-height: 100vh;
+            color: #f0e4d6;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            background: linear-gradient(180deg, #2d1f16, #1a110d);
+            border-radius: 60px 60px 30px 30px;
+            border: 2px solid #b8863e;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: "☪";
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.06;
+            right: -10px;
+            top: -30px;
+            transform: rotate(15deg);
+        }
+        .header h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: 6px;
+            color: #e8d5b8;
+            text-shadow: 0 3px 0 #8a6a3e, 0 6px 20px rgba(0,0,0,0.5);
+        }
+        .header h1 small {
+            font-size: 1.2rem;
+            display: block;
+            color: #c4a87c;
+            letter-spacing: 4px;
+            margin-top: 4px;
+        }
+        .header .sub {
+            margin-top: 14px;
+            font-size: 1rem;
+            color: #b8946a;
+            letter-spacing: 2px;
+        }
+
+        /* FILTRE */
+        .filter-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 10px 0 35px;
+        }
+        .filter-area input,
+        .filter-area select {
+            padding: 12px 22px;
+            border-radius: 60px;
+            border: 2px solid #7a5f3f;
+            background: #2d1f16;
+            color: #f0e4d6;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
+            min-width: 160px;
+        }
+        .filter-area input::placeholder {
+            color: #8a7a6a;
+        }
+        .filter-area input:focus,
+        .filter-area select:focus {
+            border-color: #c9a87c;
+            box-shadow: 0 0 20px rgba(201, 168, 124, 0.15);
+        }
+        .filter-area select option {
+            background: #1a1410;
+        }
+        .filter-area .stats-filter {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #c4a87c;
+            font-weight: 600;
+            padding: 0 10px;
+        }
+
+        /* KART GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 28px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* KART */
+        .card {
+            background: #251d17;
+            border-radius: 28px;
+            padding: 20px 18px 22px;
+            border: 2px solid #6b513a;
+            cursor: pointer;
+            transition: 0.25s ease;
+            box-shadow: 0 8px 0 #3d2d1f;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: #b8863e;
+            box-shadow: 0 14px 0 #3d2d1f, 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .card .number {
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            font-size: 2.6rem;
+            font-weight: 800;
+            opacity: 0.1;
+            color: #c9a87c;
+        }
+        .card .name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f0e4d6;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+        .card .title {
+            font-size: 1rem;
+            color: #c9a87c;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .card .period {
+            font-size: 0.95rem;
+            color: #b8946a;
+            background: #1a110d;
+            display: inline-block;
+            padding: 2px 18px;
+            border-radius: 60px;
+            border: 1px solid #5f4732;
+            margin: 6px 0 8px;
+        }
+        .card .short-info {
+            font-size: 0.9rem;
+            color: #c9b8a8;
+            line-height: 1.5;
+            margin-top: 8px;
+            opacity: 0.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card .badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 3px 14px;
+            border-radius: 60px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .card .badge.kurulus { background: #2d5a2a; color: #b8e0a8; }
+        .card .badge.yukselme { background: #8b2a2a; color: #f0b8b8; }
+        .card .badge.duraklama { background: #8a6a1a; color: #f0d8a0; }
+        .card .badge.gerileme { background: #7a5a2a; color: #f0d8b0; }
+        .card .badge.dagilma { background: #3a2a5a; color: #c8b0e8; }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #251d17;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 40px;
+            padding: 40px 38px;
+            border: 2px solid #b8863e;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal .close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: #3d2d1f;
+            border: none;
+            color: #f0e4d6;
+            font-size: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .modal .close:hover {
+            background: #5f3d2a;
+            transform: rotate(90deg);
+        }
+        .modal .m-name {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #f0e4d6;
+            letter-spacing: 2px;
+        }
+        .modal .m-title {
+            font-size: 1.2rem;
+            color: #c9a87c;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        .modal .m-period {
+            font-size: 1rem;
+            color: #b8946a;
+            background: #1a110d;
+            display: inline-block;
+            padding: 4px 24px;
+            border-radius: 60px;
+            border: 1px solid #5f4732;
+            margin: 6px 0 16px;
+        }
+        .modal .m-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 24px;
+            margin: 18px 0 16px;
+            padding: 16px;
+            background: #1a1410;
+            border-radius: 20px;
+            border: 1px solid #3d2d1f;
+        }
+        .modal .m-detail .item {
+            color: #c9b8a8;
+            font-size: 0.95rem;
+        }
+        .modal .m-detail .item strong {
+            color: #c9a87c;
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .modal .m-desc {
+            color: #d8ccbf;
+            line-height: 1.8;
+            font-size: 1.02rem;
+            margin: 12px 0 8px;
+        }
+        .modal .m-desc strong {
+            color: #c9a87c;
+        }
+        .modal .m-events {
+            background: #1a1410;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border-left: 4px solid #b8863e;
+            margin: 12px 0;
+            color: #d8ccbf;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .modal .m-events strong {
+            color: #e8d5b8;
+        }
+
+        .modal::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal::-webkit-scrollbar-track {
+            background: #1a1410;
+            border-radius: 10px;
+        }
+        .modal::-webkit-scrollbar-thumb {
+            background: #7a5f3f;
+            border-radius: 10px;
+        }
+
+        .no-result {
+            text-align: center;
+            font-size: 1.4rem;
+            color: #7a6a5a;
+            padding: 60px 0;
+            grid-column: 1 / -1;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: #6b5a4a;
+            border-top: 1px solid #3d2d1f;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2.2rem; }
+            .filter-area input,
+            .filter-area select { min-width: 120px; width: 100%; }
+            .modal { padding: 24px 18px; }
+            .modal .m-detail { grid-template-columns: 1fr; }
+            .modal .m-name { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>36 Padişah <small>Osmanlı'nın Sultanları</small></h1>
+        <div class="sub">☪ 1299'dan 1922'ye 623 yıllık ihtişam</div>
+    </div>
+
+    <!-- FILTRE -->
+    <div class="filter-area">
+        <input type="text" id="searchInput" placeholder="🔍 Padişah ara..." />
+        <select id="centuryFilter">
+            <option value="all">Tüm Yüzyıllar</option>
+            <option value="13-14">13-14. Yüzyıl (Kuruluş)</option>
+            <option value="15">15. Yüzyıl</option>
+            <option value="16">16. Yüzyıl (Yükselme)</option>
+            <option value="17">17. Yüzyıl</option>
+            <option value="18">18. Yüzyıl</option>
+            <option value="19">19. Yüzyıl</option>
+            <option value="20">20. Yüzyıl (Dağılma)</option>
+        </select>
+        <select id="periodFilter">
+            <option value="all">Tüm Dönemler</option>
+            <option value="kurulus">Kuruluş (1299-1453)</option>
+            <option value="yukselme">Yükselme (1453-1579)</option>
+            <option value="duraklama">Duraklama (1579-1683)</option>
+            <option value="gerileme">Gerileme (1683-1792)</option>
+            <option value="dagilma">Dağılma (1792-1922)</option>
+        </select>
+        <div class="stats-filter">
+            <span id="resultCount">36</span> padişah
+        </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid" id="gridContainer"></div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <button class="close" id="modalClose">✕</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        ☪ 36 Padişah · Osmanlı İmparatorluğu · 1299-1922
+    </div>
+
+    <script>
+        // ============================================================
+        // 36 PADİŞAH VERİSİ (TAMAMI)
+        // ============================================================
+        const SULTANS = [
+            // 1. Osman Gazi
+            {
+                id: 1,
+                name: "Osman Gazi",
+                title: "Bey / Sultan",
+                period: "1299-1326",
+                birth: "1258",
+                death: "1326",
+                father: "Ertuğrul Gazi",
+                mother: "Halime Hatun",
+                achievements: "Osmanlı Devleti'nin kurucusu. Bilecik, Yarhisar, İnegöl'ü fethetti. Kayı boyunu birleştirerek devlet temelini attı.",
+                events: "Söğüt'te yurt tuttu. 1299'da bağımsızlığını ilan etti. Bizans'a karşı gazâ politikası başlattı.",
+                works: "Bursa'nın fethine öncülük etti. İlk Osmanlı sikkesi onun döneminde bastırıldı.",
+                century: "13-14",
+                periodType: "kurulus",
+                color: "#2d5a2a"
+            },
+            // 2. Orhan Gazi
+            {
+                id: 2,
+                name: "Orhan Gazi",
+                title: "Bey / Sultan",
+                period: "1326-1362",
+                birth: "1281",
+                death: "1362",
+                father: "Osman Gazi",
+                mother: "Malhun Hatun",
+                achievements: "Bursa'yı fethedip başkent yaptı. İlk Osmanlı divanı ve vezirlik sistemini kurdu. Rumeli'ye geçişin kapılarını açtı.",
+                events: "1326'da Bursa fethedildi. 1337'de İzmit alındı. 1354'te Gelibolu fethedilerek Rumeli'ye ilk adım atıldı.",
+                works: "Bursa'da Orhan Gazi Camii ve İmaret'i yaptırdı. İlk medrese ve külliyeyi inşa ettirdi.",
+                century: "14",
+                periodType: "kurulus",
+                color: "#3d6a3a"
+            },
+            // 3. I. Murad (Hüdavendigâr)
+            {
+                id: 3,
+                name: "I. Murad",
+                title: "Sultan / Hüdavendigâr",
+                period: "1362-1389",
+                birth: "1326",
+                death: "1389",
+                father: "Orhan Gazi",
+                mother: "Nilüfer Hatun",
+                achievements: "Edirne'yi fethedip başkent yaptı. Pençik (devşirme) sistemini kurdu. İlk kez 'Sultan' unvanını kullandı.",
+                events: "1361'de Edirne fethedildi. 1371'de Çirmen zaferi. 1389'da I. Kosova Savaşı kazanıldı ancak kendisi şehid oldu.",
+                works: "Edirne'de Hüdavendigâr Camii ve külliyesini yaptırdı. Yeniçeri Ocağı'nı resmi olarak kurdu.",
+                century: "14",
+                periodType: "kurulus",
+                color: "#4a7a3a"
+            },
+            // 4. I. Bayezid (Yıldırım)
+            {
+                id: 4,
+                name: "I. Bayezid",
+                title: "Sultan / Yıldırım",
+                period: "1389-1402",
+                birth: "1360",
+                death: "1403",
+                father: "I. Murad",
+                mother: "Gülçiçek Hatun",
+                achievements: "Anadolu'da birliği sağladı. Niğbolu Haçlı ordusunu bozguna uğrattı. İstanbul'u kuşattı.",
+                events: "1396'da Niğbolu Zaferi. 1402'de Ankara Savaşı'nda Timur'a yenildi, esir düştü.",
+                works: "Bursa'da Yıldırım Camii ve külliyesini yaptırdı. İlk Osmanlı tersanesini kurdu.",
+                century: "14",
+                periodType: "kurulus",
+                color: "#5a8a3a"
+            },
+            // 5. I. Mehmed (Çelebi)
+            {
+                id: 5,
+                name: "I. Mehmed",
+                title: "Sultan / Çelebi",
+                period: "1413-1421",
+                birth: "1389",
+                death: "1421",
+                father: "I. Bayezid",
+                mother: "Devlet Hatun",
+                achievements: "Fetret Devri'ni sonlandırarak devleti yeniden birleştirdi. Osmanlı'yı toparladı.",
+                events: "1413'de Musa Çelebi'yi yenerek tek hakim oldu. 1416'da Şeyh Bedrettin isyanını bastırdı.",
+                works: "Bursa'da Yeşil Camii ve Türbesi'ni yaptırdı. Devlet teşkilatını yeniden düzenledi.",
+                century: "15",
+                periodType: "kurulus",
+                color: "#6a9a4a"
+            },
+            // 6. II. Murad
+            {
+                id: 6,
+                name: "II. Murad",
+                title: "Sultan",
+                period: "1421-1444 / 1446-1451",
+                birth: "1404",
+                death: "1451",
+                father: "I. Mehmed",
+                mother: "Emine Hatun",
+                achievements: "Varna Savaşı'nda Haçlıları yendi. İstanbul'u ikinci kez kuşattı. Osmanlı'yı güçlendirdi.",
+                events: "1422'de İstanbul kuşatması. 1443'te Macar seferi. 1444'te Varna Zaferi. 1448'de II. Kosova.",
+                works: "Edirne'de Üç Şerefeli Camii'yi yaptırdı. Bursa'da Muradiye Külliyesi.",
+                century: "15",
+                periodType: "kurulus",
+                color: "#7aaa5a"
+            },
+            // 7. Fatih Sultan Mehmed (II. Mehmed)
+            {
+                id: 7,
+                name: "II. Mehmed",
+                title: "Sultan / Fatih",
+                period: "1444-1446 / 1451-1481",
+                birth: "1432",
+                death: "1481",
+                father: "II. Murad",
+                mother: "Hüma Hatun",
+                achievements: "İstanbul'u fethederek Bizans'ı yıktı. 'Çağ kapatıp çağ açtı.' İstanbul başkent oldu.",
+                events: "1453'te İstanbul'un fethi. 1461'de Trabzon Rum İmparatorluğu'nun fethi. 1475'te Kırım'ın alınması.",
+                works: "Topkapı Sarayı, Fatih Camii, İstanbul Üniversitesi, Galata Kulesi'nin yenilenmesi.",
+                century: "15",
+                periodType: "yukselme",
+                color: "#8a2a2a"
+            },
+            // 8. II. Bayezid
+            {
+                id: 8,
+                name: "II. Bayezid",
+                title: "Sultan / Velî",
+                period: "1481-1512",
+                birth: "1447",
+                death: "1512",
+                father: "II. Mehmed",
+                mother: "Gülbahar Hatun",
+                achievements: "Osmanlı donanmasını güçlendirdi. Müslümanlar için önemli hayır işleri yaptı.",
+                events: "1481'de Cem Sultan olayı. 1499'da İnebahtı Deniz Zaferi. 1501'de Dulkadiroğulları'nın alınması.",
+                works: "Edirne'de Bayezid Camii ve Külliyesi. Amasya'da Bayezid Camii.",
+                century: "15",
+                periodType: "yukselme",
+                color: "#9a3a3a"
+            },
+            // 9. I. Selim (Yavuz)
+            {
+                id: 9,
+                name: "I. Selim",
+                title: "Sultan / Yavuz",
+                period: "1512-1520",
+                birth: "1470",
+                death: "1520",
+                father: "II. Bayezid",
+                mother: "Gülbahar Hatun",
+                achievements: "Mısır'ı fethederek Memlük Devleti'ni yıktı. Hilafeti Osmanlı'ya getirdi. Doğu'da büyük zaferler.",
+                events: "1514'te Çaldıran Zaferi (Safeviler). 1516'da Mercidabık, 1517'de Ridaniye ile Mısır alındı.",
+                works: "Kahire'de ilk Osmanlı valiliği kuruldu. Haremeyn (Mekke-Medine) toprakları himaye altına alındı.",
+                century: "16",
+                periodType: "yukselme",
+                color: "#aa2a2a"
+            },
+            // 10. Kanuni Sultan Süleyman (I. Süleyman)
+            {
+                id: 10,
+                name: "I. Süleyman",
+                title: "Sultan / Kanuni",
+                period: "1520-1566",
+                birth: "1494",
+                death: "1566",
+                father: "I. Selim",
+                mother: "Hafsa Sultan",
+                achievements: "Osmanlı'nın en uzun süre tahtta kalan padişahı (46 yıl). Avrupa'nın en güçlü hükümdarı.",
+                events: "1521'de Belgrad, 1522'de Rodos, 1526'da Mohaç, 1529'da Viyana kuşatması, 1534'te Bağdat.",
+                works: "Süleymaniye Camii, Kanuni Kanunnamesi. Osmanlı altın çağı.",
+                century: "16",
+                periodType: "yukselme",
+                color: "#ba3a3a"
+            },
+            // 11. II. Selim (Sarı Selim)
+            {
+                id: 11,
+                name: "II. Selim",
+                title: "Sultan / Sarı Selim",
+                period: "1566-1574",
+                birth: "1524",
+                death: "1574",
+                father: "I. Süleyman",
+                mother: "Hürrem Sultan",
+                achievements: "Kıbrıs'ı fethetti. Donanmaya önem verdi.",
+                events: "1570-1571 Kıbrıs fethi. 1571 İnebahtı Deniz Savaşı (yenilgi).",
+                works: "Edirne'de Selimiye Camii (Mimar Sinan'ın başyapıtı).",
+                century: "16",
+                periodType: "yukselme",
+                color: "#ca4a4a"
+            },
+            // 12. III. Murad
+            {
+                id: 12,
+                name: "III. Murad",
+                title: "Sultan",
+                period: "1574-1595",
+                birth: "1546",
+                death: "1595",
+                father: "II. Selim",
+                mother: "Nurbanu Sultan",
+                achievements: "Kafkasya ve Tebriz seferleri. Osmanlı toprakları en geniş haline ulaştı.",
+                events: "1578'de Kafkasya seferi. 1587'de Tebriz alındı. 1593-1595 Osmanlı-Safevi Savaşı.",
+                works: "Manisa ve İstanbul'da hayrat eserleri.",
+                century: "16",
+                periodType: "duraklama",
+                color: "#8a7a1a"
+            },
+            // 13. III. Mehmed
+            {
+                id: 13,
+                name: "III. Mehmed",
+                title: "Sultan",
+                period: "1595-1603",
+                birth: "1566",
+                death: "1603",
+                father: "III. Murad",
+                mother: "Safiye Sultan",
+                achievements: "Eğri Kalesi'ni fethetti. Haçlılara karşı zafer kazandı.",
+                events: "1596'da Eğri seferi ve Haçova Zaferi.",
+                works: "İstanbul'da Yeni Cami inşaatına başlandı.",
+                century: "16",
+                periodType: "duraklama",
+                color: "#9a8a2a"
+            },
+            // 14. I. Ahmed
+            {
+                id: 14,
+                name: "I. Ahmed",
+                title: "Sultan",
+                period: "1603-1617",
+                birth: "1590",
+                death: "1617",
+                father: "III. Mehmed",
+                mother: "Handan Sultan",
+                achievements: "Sultan Ahmed Camii (Mavi Cami)'ni yaptırdı. İlk kez kardeş katli yasasını kaldırdı.",
+                events: "1605'te Safevilerle barış. 1609'da Celali isyanları.",
+                works: "İstanbul'da Sultan Ahmed Camii (Mavi Cami).",
+                century: "17",
+                periodType: "duraklama",
+                color: "#aa9a3a"
+            },
+            // 15. I. Mustafa (Deli Mustafa)
+            {
+                id: 15,
+                name: "I. Mustafa",
+                title: "Sultan",
+                period: "1617-1618 / 1622-1623",
+                birth: "1591",
+                death: "1639",
+                father: "III. Mehmed",
+                mother: "Halime Sultan",
+                achievements: "Kısa süreli iki kez tahta çıktı. Akli dengesizliğiyle bilinir.",
+                events: "1618'de tahttan indirildi. 1622'de II. Osman'ın öldürülmesiyle yeniden tahta, 1623'te tekrar indirildi.",
+                works: "Önemli bir eseri yoktur.",
+                century: "17",
+                periodType: "duraklama",
+                color: "#baaa4a"
+            },
+            // 16. II. Osman (Genç Osman)
+            {
+                id: 16,
+                name: "II. Osman",
+                title: "Sultan / Genç Osman",
+                period: "1618-1622",
+                birth: "1604",
+                death: "1622",
+                father: "I. Ahmed",
+                mother: "Mahfiruz Hatun",
+                achievements: "Genç yaşta reform yapmaya çalıştı. Yeniçeri Ocağı'nı kaldırmak istedi.",
+                events: "1621'de Hotin Seferi. 1622'de Yeniçeriler tarafından tahttan indirilip öldürüldü.",
+                works: "Reform girişimleriyle bilinir.",
+                century: "17",
+                periodType: "duraklama",
+                color: "#caba5a"
+            },
+            // 17. IV. Murad
+            {
+                id: 17,
+                name: "IV. Murad",
+                title: "Sultan / Bağdat Fatihi",
+                period: "1623-1640",
+                birth: "1612",
+                death: "1640",
+                father: "I. Ahmed",
+                mother: "Kösem Sultan",
+                achievements: "Bağdat'ı Safevilerden geri aldı. İç isyanları bastırdı. Yeniçeri Ocağı'nı disipline etti.",
+                events: "1638'de Bağdat'ın fethi. 1635'te Revan seferi.",
+                works: "Bağdat'ta fetih camileri. İstanbul'da su yolları onarımı.",
+                century: "17",
+                periodType: "duraklama",
+                color: "#daca6a"
+            },
+            // 18. İbrahim (Deli İbrahim)
+            {
+                id: 18,
+                name: "İbrahim",
+                title: "Sultan / Deli İbrahim",
+                period: "1640-1648",
+                birth: "1615",
+                death: "1648",
+                father: "I. Ahmed",
+                mother: "Kösem Sultan",
+                achievements: "Devlet işlerine pek ilgi göstermedi. Zevk ve eğlenceyle meşhur.",
+                events: "1645'te Girit seferi başladı. 1648'de tahttan indirildi ve öldürüldü.",
+                works: "Önemli bir eseri yoktur.",
+                century: "17",
+                periodType: "duraklama",
+                color: "#eada7a"
+            },
+            // 19. IV. Mehmed (Avcı)
+            {
+                id: 19,
+                name: "IV. Mehmed",
+                title: "Sultan / Avcı",
+                period: "1648-1687",
+                birth: "1642",
+                death: "1693",
+                father: "İbrahim",
+                mother: "Turhan Sultan",
+                achievements: "En uzun saltanatlarından biri (39 yıl). Avusturya'ya karşı başarılar.",
+                events: "1664'te Vasvar Barışı. 1683'te II. Viyana Kuşatması (başarısız). 1687'de tahttan indirildi.",
+                works: "İstanbul'da Yeni Camii'nin tamamlanması.",
+                century: "17",
+                periodType: "gerileme",
+                color: "#7a6a2a"
+            },
+            // 20. II. Süleyman
+            {
+                id: 20,
+                name: "II. Süleyman",
+                title: "Sultan",
+                period: "1687-1691",
+                birth: "1642",
+                death: "1691",
+                father: "İbrahim",
+                mother: "Saliha Dilaşub Sultan",
+                achievements: "Dönemi savaşlarla geçti. Belgrad'ı geri aldı.",
+                events: "1690'da Belgrad'ın geri alınması. 1691'de Salankamen Savaşı (yenilgi).",
+                works: "Devlet teşkilatında düzenlemeler.",
+                century: "17",
+                periodType: "gerileme",
+                color: "#8a7a3a"
+            },
+            // 21. II. Ahmed
+            {
+                id: 21,
+                name: "II. Ahmed",
+                title: "Sultan",
+                period: "1691-1695",
+                birth: "1643",
+                death: "1695",
+                father: "İbrahim",
+                mother: "Hatice Muazzez Sultan",
+                achievements: "Kısa süren saltanat, savaşlarla dolu.",
+                events: "1691'de Salankamen yenilgisi. 1695'te sona erdi.",
+                works: "Önemli bir eseri yoktur.",
+                century: "17",
+                periodType: "gerileme",
+                color: "#9a8a4a"
+            },
+            // 22. II. Mustafa
+            {
+                id: 22,
+                name: "II. Mustafa",
+                title: "Sultan",
+                period: "1695-1703",
+                birth: "1664",
+                death: "1703",
+                father: "IV. Mehmed",
+                mother: "Gülnuş Sultan",
+                achievements: "Karlofça Antlaşması ile büyük toprak kaybı yaşandı.",
+                events: "1699'da Karlofça Antlaşması (Macaristan kaybedildi). 1703'te Edirne Vakası ile tahttan indirildi.",
+                works: "Islahat çalışmaları.",
+                century: "17-18",
+                periodType: "gerileme",
+                color: "#aa9a5a"
+            },
+            // 23. III. Ahmed
+            {
+                id: 23,
+                name: "III. Ahmed",
+                title: "Sultan",
+                period: "1703-1730",
+                birth: "1673",
+                death: "1736",
+                father: "IV. Mehmed",
+                mother: "Gülnuş Sultan",
+                achievements: "Lâle Devri (1718-1730). İlk matbaa kuruldu. Sanat ve edebiyat gelişti.",
+                events: "1718'de Pasarofça Antlaşması. 1730'da Patrona Halil İsyanı ile tahttan indirildi.",
+                works: "İstanbul'da Sâdâbad Kasrı. İlk Türk matbaası (1727).",
+                century: "18",
+                periodType: "gerileme",
+                color: "#baaa6a"
+            },
+            // 24. I. Mahmud
+            {
+                id: 24,
+                name: "I. Mahmud",
+                title: "Sultan",
+                period: "1730-1754",
+                birth: "1696",
+                death: "1754",
+                father: "II. Mustafa",
+                mother: "Saliha Sultan",
+                achievements: "Osmanlı-Safevi savaşları. Belgrad'ı geri aldı.",
+                events: "1739'da Belgrad Antlaşması ile Belgrad geri alındı. 1746'da Safevilerle barış.",
+                works: "İstanbul'da Nuruosmaniye Camii inşaatına başlandı.",
+                century: "18",
+                periodType: "gerileme",
+                color: "#caba7a"
+            },
+            // 25. III. Osman
+            {
+                id: 25,
+                name: "III. Osman",
+                title: "Sultan",
+                period: "1754-1757",
+                birth: "1699",
+                death: "1757",
+                father: "II. Mustafa",
+                mother: "Şehsuvar Sultan",
+                achievements: "Kısa saltanat. Islahat çalışmaları.",
+                events: "1755'te İstanbul yangını.",
+                works: "Nuruosmaniye Camii'nin tamamlanması.",
+                century: "18",
+                periodType: "gerileme",
+                color: "#daca8a"
+            },
+            // 26. III. Mustafa
+            {
+                id: 26,
+                name: "III. Mustafa",
+                title: "Sultan",
+                period: "1757-1774",
+                birth: "1717",
+                death: "1774",
+                father: "III. Ahmed",
+                mother: "Mihrişah Sultan",
+                achievements: "Islahat hareketleri. Deniz ve kara kuvvetlerinde modernizasyon.",
+                events: "1768-1774 Osmanlı-Rus Savaşı. 1774'te Küçük Kaynarca Antlaşması (büyük kayıp).",
+                works: "İstanbul'da Ayazma Camii ve Mühendishane-i Bahr-i Hümayun.",
+                century: "18",
+                periodType: "gerileme",
+                color: "#eada9a"
+            },
+            // 27. I. Abdülhamid
+            {
+                id: 27,
+                name: "I. Abdülhamid",
+                title: "Sultan",
+                period: "1774-1789",
+                birth: "1725",
+                death: "1789",
+                father: "III. Ahmed",
+                mother: "Rabia Şermi Sultan",
+                achievements: "Dönemi savaşlarla geçti. Devlet otoritesini korumaya çalıştı.",
+                events: "1774'te Küçük Kaynarca Antlaşması sonrası. 1787-1791 Osmanlı-Rus Savaşı.",
+                works: "İstanbul'da Beylerbeyi Camii ve Hamidiye Camii.",
+                century: "18",
+                periodType: "gerileme",
+                color: "#f0eaaa"
+            },
+            // 28. III. Selim
+            {
+                id: 28,
+                name: "III. Selim",
+                title: "Sultan / Bestekâr",
+                period: "1789-1807",
+                birth: "1761",
+                death: "1808",
+                father: "III. Mustafa",
+                mother: "Mihrişah Sultan",
+                achievements: "Nizam-ı Cedid ıslahatları. Modern ordunun temelleri atıldı.",
+                events: "1798'de Napolyon'un Mısır seferi. 1807'de Kabakçı Mustafa İsyanı ile tahttan indirildi.",
+                works: "Müzikle uğraştı, besteleri vardır. Mühendishane-i Berr-i Hümayun.",
+                century: "18-19",
+                periodType: "gerileme",
+                color: "#7a7a3a"
+            },
+            // 29. IV. Mustafa
+            {
+                id: 29,
+                name: "IV. Mustafa",
+                title: "Sultan",
+                period: "1807-1808",
+                birth: "1779",
+                death: "1808",
+                father: "I. Abdülhamid",
+                mother: "Ayşe Sineperver Sultan",
+                achievements: "Kısa saltanat. Alemdar Paşa olayı.",
+                events: "1808'de Alemdar Paşa'ya karşı başarısız. Tahttan indirildi ve öldürüldü.",
+                works: "Önemli bir eseri yoktur.",
+                century: "19",
+                periodType: "dagilma",
+                color: "#8a8a4a"
+            },
+            // 30. II. Mahmud
+            {
+                id: 30,
+                name: "II. Mahmud",
+                title: "Sultan / İnkılâpçı",
+                period: "1808-1839",
+                birth: "1785",
+                death: "1839",
+                father: "I. Abdülhamid",
+                mother: "Nakşidil Sultan",
+                achievements: "Yeniçeri Ocağı'nı kaldırdı (1826). Tanzimat'ın önünü açtı. Batılı tarzda reformlar.",
+                events: "1821'de Yunan İsyanı. 1826'da Vaka-i Hayriye (Yeniçeri kaldırıldı). 1839'da öldü.",
+                works: "Türk kıyafetinde değişim, Mecelle ve modern ordunun kurulması.",
+                century: "19",
+                periodType: "dagilma",
+                color: "#9a9a5a"
+            },
+            // 31. Abdülmecid
+            {
+                id: 31,
+                name: "Abdülmecid",
+                title: "Sultan",
+                period: "1839-1861",
+                birth: "1823",
+                death: "1861",
+                father: "II. Mahmud",
+                mother: "Bezmiâlem Sultan",
+                achievements: "Tanzimat Fermanı (1839) ve Islahat Fermanı (1856). Batılılaşma hızlandı.",
+                events: "1840'ta Gülhane Hatt-ı Hümayunu. 1853-1856 Kırım Savaşı.",
+                works: "Dolmabahçe Sarayı, İstanbul'da Batılı tarzda mimari.",
+                century: "19",
+                periodType: "dagilma",
+                color: "#aaaa6a"
+            },
+            // 32. Abdülaziz
+            {
+                id: 32,
+                name: "Abdülaziz",
+                title: "Sultan",
+                period: "1861-1876",
+                birth: "1830",
+                death: "1876",
+                father: "II. Mahmud",
+                mother: "Pertevniyal Sultan",
+                achievements: "Osmanlı donanmasını modernleştirdi. İlk demiryolları ve telgraf hatları.",
+                events: "1869'da Süveyş Kanalı açıldı. 1875'te Balkan isyanları. 1876'da tahttan indirildi.",
+                works: "İstanbul'da Pertevniyal Valide Camii, Tophane Saat Kulesi.",
+                century: "19",
+                periodType: "dagilma",
+                color: "#baba7a"
+            },
+            // 33. V. Murad
+            {
+                id: 33,
+                name: "V. Murad",
+                title: "Sultan",
+                period: "1876",
+                birth: "1840",
+                death: "1904",
+                father: "Abdülmecid",
+                mother: "Şevkefza Sultan",
+                achievements: "93 gün süren en kısa saltanat. Sağlık sorunları nedeniyle tahttan indirildi.",
+                events: "1876'da I. Meşrutiyet ilan edildi (onun döneminde).",
+                works: "Önemli bir eseri yoktur.",
+                century: "19",
+                periodType: "dagilma",
+                color: "#caca8a"
+            },
+            // 34. II. Abdülhamid
+            {
+                id: 34,
+                name: "II. Abdülhamid",
+                title: "Sultan / Ulu Hakan",
+                period: "1876-1909",
+                birth: "1842",
+                death: "1918",
+                father: "Abdülmecid",
+                mother: "Tirimüjgan Sultan",
+                achievements: "Panislamizm politikası. İstanbul'da teknolojik altyapı. Devlet otoritesini koruma.",
+                events: "1877-78 Osmanlı-Rus Savaşı (93 Harbi). 1908'de II. Meşrutiyet. 1909'da 31 Mart İsyanı ile tahttan indirildi.",
+                works: "Yıldız Sarayı, Hamidiye Camii, demiryolu projeleri (Hicaz Demiryolu).",
+                century: "19-20",
+                periodType: "dagilma",
+                color: "#dada9a"
+            },
+            // 35. V. Mehmed (Reşad)
+            {
+                id: 35,
+                name: "V. Mehmed",
+                title: "Sultan / Reşad",
+                period: "1909-1918",
+                birth: "1844",
+                death: "1918",
+                father: "Abdülmecid",
+                mother: "Gülcemal Sultan",
+                achievements: "I. Dünya Savaşı dönemi. İttihad ve Terakki yönetimi altında sembolik padişah.",
+                events: "1914'te I. Dünya Savaşı'na Almanya safında katılım. 1918'de Mondros Mütarekesi.",
+                works: "Sembolik saltanat, önemli eseri yok.",
+                century: "20",
+                periodType: "dagilma",
+                color: "#eaea2a"
+            },
+            // 36. VI. Mehmed (Vahdeddin)
+            {
+                id: 36,
+                name: "VI. Mehmed",
+                title: "Sultan / Vahdeddin",
+                period: "1918-1922",
+                birth: "1861",
+                death: "1926",
+                father: "Abdülmecid",
+                mother: "Gülistu Sultan",
+                achievements: "Son Osmanlı padişahı. Saltanatın kaldırıldığı dönem.",
+                events: "1919'da Anadolu hareketi. 1922'de saltanat kaldırıldı, 1926'da San Remo'da öldü.",
+                works: "Son padişah olarak tarihe geçti.",
+                century: "20",
+                periodType: "dagilma",
+                color: "#fafa3a"
+            }
+        ];
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const grid = document.getElementById('gridContainer');
+        const searchInput = document.getElementById('searchInput');
+        const centuryFilter = document.getElementById('centuryFilter');
+        const periodFilter = document.getElementById('periodFilter');
+        const resultCount = document.getElementById('resultCount');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalBody = document.getElementById('modalBody');
+        const modalClose = document.getElementById('modalClose');
+
+        // ============================================================
+        // RENDER KARTLAR
+        // ============================================================
+        function renderCards(filteredSultans) {
+            if (filteredSultans.length === 0) {
+                grid.innerHTML = `<div class="no-result">⏳ Bu kriterlere uygun padişah bulunamadı.</div>`;
+                resultCount.textContent = '0';
+                return;
+            }
+
+            let html = '';
+            filteredSultans.forEach(s => {
+                const badgeClass = s.periodType;
+                const badgeLabel = {
+                    kurulus: 'Kuruluş',
+                    yukselme: 'Yükselme',
+                    duraklama: 'Duraklama',
+                    gerileme: 'Gerileme',
+                    dagilma: 'Dağılma'
+                } [s.periodType] || '';
+
+                html += `
+                    <div class="card" style="border-color: ${s.color}" data-id="${s.id}">
+                        <div class="number">${s.id}</div>
+                        <div class="name">${s.name}</div>
+                        <div class="title">${s.title}</div>
+                        <div class="period">${s.period}</div>
+                        <div class="short-info">${s.achievements.slice(0, 100)}...</div>
+                        <span class="badge ${badgeClass}">${badgeLabel}</span>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            resultCount.textContent = filteredSultans.length;
+
+            // Kartlara tıklama
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = parseInt(card.dataset.id);
+                    const sultan = SULTANS.find(s => s.id === id);
+                    if (sultan) openModal(sultan);
+                });
+            });
+        }
+
+        // ============================================================
+        // FILTRELEME
+        // ============================================================
+        function filterSultans() {
+            const search = searchInput.value.toLowerCase().trim();
+            const century = centuryFilter.value;
+            const period = periodFilter.value;
+
+            let filtered = SULTANS.filter(s => {
+                // Arama
+                if (search) {
+                    const match = s.name.toLowerCase().includes(search) ||
+                                  s.title.toLowerCase().includes(search) ||
+                                  s.achievements.toLowerCase().includes(search) ||
+                                  s.events.toLowerCase().includes(search);
+                    if (!match) return false;
+                }
+
+                // Yüzyıl
+                if (century !== 'all') {
+                    if (!s.century.includes(century)) return false;
+                }
+
+                // Dönem
+                if (period !== 'all') {
+                    if (s.periodType !== period) return false;
+                }
+
+                return true;
+            });
+
+            renderCards(filtered);
+        }
+
+        // ============================================================
+        // MODAL
+        // ============================================================
+        function openModal(s) {
+            const badgeLabel = {
+                kurulus: 'Kuruluş',
+                yukselme: 'Yükselme',
+                duraklama: 'Duraklama',
+                gerileme: 'Gerileme',
+                dagilma: 'Dağılma'
+            } [s.periodType] || '';
+
+            modalBody.innerHTML = `
+                <div class="m-name" style="color: ${s.color}">${s.name}</div>
+                <div class="m-title">${s.title}</div>
+                <div class="m-period">${s.period} · ${badgeLabel}</div>
+
+                <div class="m-detail">
+                    <div class="item"><strong>Doğum</strong>${s.birth}</div>
+                    <div class="item"><strong>Ölüm</strong>${s.death}</div>
+                    <div class="item"><strong>Babası</strong>${s.father}</div>
+                    <div class="item"><strong>Annesi</strong>${s.mother}</div>
+                </div>
+
+                <div class="m-desc">
+                    <strong>🏴 Başarıları</strong><br />
+                    ${s.achievements}
+                </div>
+
+                <div class="m-events">
+                    <strong>📜 Önemli Olaylar</strong><br />
+                    ${s.events}
+                </div>
+
+                <div class="m-desc">
+                    <strong>🏛️ Eserleri</strong><br />
+                    ${s.works}
+                </div>
+            `;
+
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================================
+        // EVENTLER
+        // ============================================================
+        searchInput.addEventListener('input', filterSultans);
+        centuryFilter.addEventListener('change', filterSultans);
+        periodFilter.addEventListener('change', filterSultans);
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // ============================================================
+        // BASLAT
+        // ============================================================
+        renderCards(SULTANS);
+    </script>
+
+</body>
+</html>
